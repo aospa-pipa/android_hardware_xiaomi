@@ -129,6 +129,7 @@ class DolbySettingsFragment : SettingsBasePreferenceFragment(),
         switchBar.setChecked(dsOn)
 
         profilePref.onPreferenceChangeListener = this
+        updateProfileIcon(dolbyController.profile)
         hpVirtPref.onPreferenceChangeListener = this
         spkVirtPref.onPreferenceChangeListener = this
         stereoPref?.apply {
@@ -175,6 +176,7 @@ class DolbySettingsFragment : SettingsBasePreferenceFragment(),
             PREF_PROFILE -> {
                 val profile = newValue.toString().toInt()
                 dolbyController.profile = profile
+                updateProfileIcon(profile)
                 updateProfileSpecificPrefs()
             }
 
@@ -277,6 +279,16 @@ class DolbySettingsFragment : SettingsBasePreferenceFragment(),
         volumePref?.isChecked = dolbyController.getVolumeLevelerEnabled(currentProfile)
         hpVirtPref.isChecked = dolbyController.getHeadphoneVirtEnabled(currentProfile)
         stereoPref?.value = dolbyController.getStereoWideningAmount(currentProfile)
+    }
+
+    private fun updateProfileIcon(profile: Int) {
+        when (profile) {
+            0 -> profilePref.setIcon(R.drawable.ic_profile_dynamic)
+            1 -> profilePref.setIcon(R.drawable.ic_profile_movie)
+            2 -> profilePref.setIcon(R.drawable.ic_profile_music)
+            3 -> profilePref.setIcon(R.drawable.ic_profile_custom)
+            else -> profilePref.setIcon(R.drawable.ic_dolby)
+        }
     }
 
     companion object {
